@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -18,8 +19,11 @@ public class SpringSecurity {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, ServerProperties serverProperties) throws Exception {
-        http.csrf().disable();
-        http.authorizeHttpRequests(
+
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+//                .csrf(x -> x.disable())
+                .authorizeHttpRequests(
                 auth -> {
                     // 动态注册白名单
                     if (securityUrlProperties.getWhitelist() != null) {

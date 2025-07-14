@@ -15,7 +15,7 @@ security:
 
 jwt:
   secret: yuzhouwudichaojidashuaibihuxuefengshiye # 请替换为实际的JWT密钥
-  expiration-hours: 86400 # token有效期(秒)
+  expiration-seconds: 86400 # token有效期(秒)
   token-header: Authorization
   token-prefix: "Bearer "
 
