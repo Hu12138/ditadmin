@@ -1,0 +1,21 @@
+server:
+  port: 8081
+
+security:
+  whitelist:
+    - /public/**
+    - /health
+  blacklist:
+    - /internal/**
+  roleMappings:
+    - pattern: /admin/**
+      role: ADMIN
+    - pattern: /finance/**
+      role: FINANCE
+
+jwt:
+  secret: yuzhouwudichaojidashuaibihuxuefengshiye # 请替换为实际的JWT密钥
+  expiration-hours: 86400 # token有效期(秒)
+  token-header: Authorization
+  token-prefix: "Bearer "
+
