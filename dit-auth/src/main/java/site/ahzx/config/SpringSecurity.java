@@ -21,6 +21,7 @@ public class SpringSecurity {
     public SecurityFilterChain filterChain(HttpSecurity http, ServerProperties serverProperties) throws Exception {
 
         http
+                .formLogin(form -> form.disable()) // 禁用默认表单登录
                 .csrf(AbstractHttpConfigurer::disable)
 //                .csrf(x -> x.disable())
                 .authorizeHttpRequests(

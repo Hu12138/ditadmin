@@ -1,11 +1,8 @@
 server:
-  address: 0.0.0.0
-  port: 8081
-
+  port: 8888
 spring:
   application:
-    name: dit-auth-service
-
+    name: dit-gateway-service
   cloud:
     nacos:
       discovery:
@@ -14,13 +11,16 @@ spring:
         password: nacos
         namespace: 60a9e1d6-a938-4cb7-966c-5e8482ae5612
       config:
+        server-addr: localhost:20001
         username: nacos
         password: nacos
-        server-addr: localhost:20001
         namespace: 60a9e1d6-a938-4cb7-966c-5e8482ae5612
-
   config:
-    import: nacos:dit-auth.yaml
-
-
+    import: nacos:dit-gateway.yaml
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty: DEBUG
+    org.springframework.cloud.client.discovery: DEBUG
+    org.springframework.cloud.loadbalancer: DEBUG
 

@@ -1,10 +1,9 @@
 server:
-  address: 0.0.0.0
-  port: 8081
+  port: 8082
 
 spring:
   application:
-    name: dit-auth-service
+    name: dit-admin-service
 
   cloud:
     nacos:
