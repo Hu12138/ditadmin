@@ -1,0 +1,38 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: dit-admin-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/dit?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: <PASSWORD>
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: DatebookHikariCP
+      max-lifetime: 60000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:20001
+        username: nacos
+        password: nacos
+        namespace: 60a9e1d6-a938-4cb7-966c-5e8482ae5612
+      config:
+        username: nacos
+        password: nacos
+        server-addr: localhost:20001
+        namespace: 60a9e1d6-a938-4cb7-966c-5e8482ae5612
+
+  config:
+    import: nacos:dit-system.yaml
+
+

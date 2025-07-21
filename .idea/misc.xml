@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/dit-common/pom.xml" />
         <option value="$PROJECT_DIR$/dit-admin/pom.xml" />
         <option value="$PROJECT_DIR$/dit-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/dit-system/pom.xml" />
       </list>
     </option>
   </component>

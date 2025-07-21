@@ -23,4 +23,3 @@ logging:
     reactor.netty: DEBUG
     org.springframework.cloud.client.discovery: DEBUG
     org.springframework.cloud.loadbalancer: DEBUG
-

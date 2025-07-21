@@ -8,9 +8,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="dit-common" />
-        <module name="dit-admin" />
         <module name="dit-gateway" />
         <module name="dit-auth" />
+        <module name="dit-system" />
       </profile>
     </annotationProcessing>
   </component>
