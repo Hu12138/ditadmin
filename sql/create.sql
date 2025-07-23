@@ -62,6 +62,7 @@ CREATE TABLE `sys_roles` (
                              `updated_by` BIGINT COMMENT '更新者',
                              `role_name` VARCHAR(100) COMMENT '角色名称（可中文）',
                              `role_code` VARCHAR(100) COMMENT '角色编码（英文）',
+                             `dataScope` VARCHAR(100) COMMENT '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限，5:仅本人）',
                              `role_desc` VARCHAR(255) COMMENT '角色描述',
                              `role_order` INT COMMENT '角色排序',
                              `status` INT COMMENT '状态 0：禁用 1：正常'
@@ -101,3 +102,11 @@ CREATE TABLE `sys_users` (
                              `sex` INT COMMENT '性别 0：女 1：男',
                              `status` INT COMMENT '状态 0：禁用 1：正常'
 ) COMMENT='用户信息表';
+
+-- ================================
+-- 8. 角色部门关联表 sys_role_departments
+-- ================================
+CREATE TABLE `sys_role_departments` (
+                                       `role_id` BIGINT COMMENT '角色ID',
+                                       `department_id` BIGINT COMMENT '部门ID'
+) COMMENT='角色-部门关联表';

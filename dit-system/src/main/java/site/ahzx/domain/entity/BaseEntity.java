@@ -1,5 +1,6 @@
 package site.ahzx.domain.entity;
 
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import lombok.Data;
 
@@ -33,4 +34,10 @@ public class BaseEntity implements Serializable {
      * 更新者
      */
     private Long updatedBy;
+
+    /**
+     * 租户ID
+     */
+    @Column(tenantId = true)
+    private Long tenantId;
 }

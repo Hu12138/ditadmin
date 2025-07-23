@@ -8,7 +8,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Data
-@Table(name = "sys_user_departments")
+@Table("sys_user_departments")
 public class SysUserDepartments implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

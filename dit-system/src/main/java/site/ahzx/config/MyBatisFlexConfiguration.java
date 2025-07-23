@@ -1,9 +1,11 @@
 package site.ahzx.config;
 
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.audit.AuditManager;
 import com.mybatisflex.core.audit.ConsoleMessageCollector;
 import com.mybatisflex.core.audit.MessageCollector;
+import com.mybatisflex.core.keygen.KeyGenerators;
 import com.mybatisflex.spring.boot.MyBatisFlexCustomizer;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,10 +21,13 @@ public class MyBatisFlexConfiguration implements MyBatisFlexCustomizer {
         MessageCollector collector = new ConsoleMessageCollector();
         AuditManager.setMessageCollector(collector);
 
+        // 设置主键生成策略
         FlexGlobalConfig.KeyConfig keyConfig = new FlexGlobalConfig.KeyConfig();
         keyConfig.setKeyType(KeyType.Generator);
-        keyConfig.setValue(KeyGenerators.flexId)
+        keyConfig.setValue(KeyGenerators.flexId);
         keyConfig.setBefore(true);
+
+
 
         FlexGlobalConfig.getDefaultConfig().setKeyConfig(keyConfig);
 

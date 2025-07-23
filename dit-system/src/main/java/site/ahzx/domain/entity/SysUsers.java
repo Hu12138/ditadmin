@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = true) // 明确包含父类字段
-@Table(name = "sys_users")
+@Table("sys_users")
 public class SysUsers extends BaseEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

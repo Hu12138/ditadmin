@@ -8,7 +8,7 @@ import java.io.Serial;
 import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "sys_departments")
+@Table("sys_departments")
 public class SysDepartments extends BaseEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

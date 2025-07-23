@@ -1,12 +1,13 @@
 package site.ahzx.domain.entity;
 
+import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-@Table(name = "sys_menus")
+@Table("sys_menus")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SysMenus extends BaseEntity implements Serializable {

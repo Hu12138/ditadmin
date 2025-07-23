@@ -7,7 +7,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Data
-@Table(name = "sys_user_roles")
+@Table("sys_user_roles")
 public class SysUserRoles implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

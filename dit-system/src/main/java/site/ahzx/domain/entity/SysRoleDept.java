@@ -7,17 +7,12 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Data
-@Table("sys_role_menus")
-public class SysRoleMenus implements Serializable {
+@Table("sys_role_departments")
+public class SysRoleDept implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 角色ID
-     */
     private Long roleId;
-    /**
-     * 菜单ID
-     */
-    private Long menuId;
+    private Long departmentId;
+
 }
