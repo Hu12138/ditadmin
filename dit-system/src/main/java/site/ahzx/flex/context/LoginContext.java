@@ -1,6 +1,6 @@
-package flex.context;
+package site.ahzx.flex.context;
 
-import flex.model.LoginUser;
+import site.ahzx.flex.model.LoginUser;
 
 public class LoginContext {
     private static final ThreadLocal<LoginUser> USER_HOLDER = new ThreadLocal<>();

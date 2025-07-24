@@ -3,13 +3,15 @@ package site.ahzx.domain.entity;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
-@Data
+
 @EqualsAndHashCode(callSuper = true)
-@Table("sys_departments")
-public class SysDepartments extends BaseEntity implements Serializable {
+@Table("sys_depts")
+@Data(staticConstructor = "create")
+public class SysDepts extends BaseEntity<SysDepts> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     /**
@@ -19,7 +21,7 @@ public class SysDepartments extends BaseEntity implements Serializable {
     /**
      * 部门名称
      */
-    private String departmentName;
+    private String deptName;
 
     /**
      * 祖级列表

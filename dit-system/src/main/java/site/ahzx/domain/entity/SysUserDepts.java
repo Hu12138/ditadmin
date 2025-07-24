@@ -1,15 +1,17 @@
 package site.ahzx.domain.entity;
 
 import com.mybatisflex.annotation.Table;
+import com.mybatisflex.core.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-@Data
-@Table("sys_user_departments")
-public class SysUserDepartments implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+@Data(staticConstructor = "create")
+@Table("sys_user_depts")
+public class SysUserDepts extends Model<SysUserDepts> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -20,5 +22,5 @@ public class SysUserDepartments implements Serializable {
     /**
      * 部门ID
      */
-    private Long departmentId;
+    private Long deptId;
 }

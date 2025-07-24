@@ -1,4 +1,4 @@
-package site.ahzx.config;
+package site.ahzx.flex.config;
 
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.core.FlexGlobalConfig;
@@ -26,6 +26,9 @@ public class MyBatisFlexConfiguration implements MyBatisFlexCustomizer {
         keyConfig.setKeyType(KeyType.Generator);
         keyConfig.setValue(KeyGenerators.flexId);
         keyConfig.setBefore(true);
+
+        // 设置多租户
+
 
 
 

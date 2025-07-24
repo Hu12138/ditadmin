@@ -7,10 +7,10 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 import java.io.Serializable;
 
-@Data
+@Data(staticConstructor = "create")
 @EqualsAndHashCode(callSuper = true)
 @Table("sys_roles")
-public class SysRoles extends BaseEntity implements Serializable {
+public class SysRoles extends BaseEntity<SysRoles> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

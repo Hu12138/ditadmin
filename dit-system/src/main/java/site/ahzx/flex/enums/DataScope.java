@@ -1,4 +1,4 @@
-package flex.enums;
+package site.ahzx.flex.enums;
 
 public enum DataScope {
     /**

@@ -1,15 +1,23 @@
 package site.ahzx.domain.entity;
 
+
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
+import com.mybatisflex.core.activerecord.Model;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+//@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class BaseEntity implements Serializable {
+@Accessors(chain = true)
+public class BaseEntity <T extends BaseEntity<T>> extends Model<T> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     /**

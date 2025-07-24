@@ -1,31 +1,29 @@
-package flex.aspect;
+package site.ahzx.flex.aspect;
 
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.query.QueryColumn;
-import flex.annotation.DataPermission;
-import flex.enums.DataScope;
-import flex.model.LoginUser;
+import site.ahzx.flex.annotation.QueryDataPermission;
+import site.ahzx.flex.enums.DataScope;
+import site.ahzx.flex.model.LoginUser;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
-import flex.context.LoginContext;
+import site.ahzx.flex.context.LoginContext;
 
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
 
 @Slf4j
 @Aspect
 @Component
-public class DataPermissionAspect {
+public class QueryDataPermissionAspect {
 
-    @Around("@annotation(flex.annotation.DataPermission)")
+    @Around("@annotation(site.ahzx.flex.annotation.QueryDataPermission)")
     public Object injectDataPermission(ProceedingJoinPoint joinPoint) throws Throwable {
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-        DataPermission permission = method.getAnnotation(DataPermission.class);
+        QueryDataPermission permission = method.getAnnotation(QueryDataPermission.class);
         if (!permission.enabled()) {
             return joinPoint.proceed();
         }

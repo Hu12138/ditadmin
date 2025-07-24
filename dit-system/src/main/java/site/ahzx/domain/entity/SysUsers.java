@@ -7,10 +7,10 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 import java.io.Serializable;
 
-@Data
+@Data(staticConstructor = "create")
 @EqualsAndHashCode(callSuper = true) // 明确包含父类字段
 @Table("sys_users")
-public class SysUsers extends BaseEntity implements Serializable {
+public class SysUsers extends BaseEntity<SysUsers> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

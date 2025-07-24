@@ -8,9 +8,9 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Table("sys_menus")
-@Data
+@Data(staticConstructor = "create")
 @EqualsAndHashCode(callSuper = true)
-public class SysMenus extends BaseEntity implements Serializable {
+public class SysMenus extends BaseEntity<SysMenus> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 

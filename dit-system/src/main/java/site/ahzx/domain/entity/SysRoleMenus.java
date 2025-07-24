@@ -1,14 +1,17 @@
 package site.ahzx.domain.entity;
 
 import com.mybatisflex.annotation.Table;
+import com.mybatisflex.core.activerecord.Model;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-@Data
+@EqualsAndHashCode(callSuper = true)
+@Data(staticConstructor = "create")
 @Table("sys_role_menus")
-public class SysRoleMenus implements Serializable {
+public class SysRoleMenus extends Model<SysRoleMenus> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
