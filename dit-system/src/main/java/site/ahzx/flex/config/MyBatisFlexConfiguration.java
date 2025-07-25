@@ -6,7 +6,9 @@ import com.mybatisflex.core.audit.AuditManager;
 import com.mybatisflex.core.audit.ConsoleMessageCollector;
 import com.mybatisflex.core.audit.MessageCollector;
 import com.mybatisflex.core.keygen.KeyGenerators;
+import com.mybatisflex.core.tenant.TenantFactory;
 import com.mybatisflex.spring.boot.MyBatisFlexCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -27,12 +29,14 @@ public class MyBatisFlexConfiguration implements MyBatisFlexCustomizer {
         keyConfig.setValue(KeyGenerators.flexId);
         keyConfig.setBefore(true);
 
-        // 设置多租户
-
-
-
 
         FlexGlobalConfig.getDefaultConfig().setKeyConfig(keyConfig);
 
     }
+
+    @Bean
+    public TenantFactory tenantFactory(){
+        return new MyTenantFactory();
+    }
+
 }

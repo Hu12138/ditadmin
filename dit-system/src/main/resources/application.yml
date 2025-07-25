@@ -3,11 +3,11 @@ server:
 
 spring:
   application:
-    name: dit-admin-service
+    name: dit-system-service
   datasource:
-    url: jdbc:mysql://localhost:3306/dit?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
-    username: root
-    password: <PASSWORD>
+    url: jdbc:mysql://192.168.8.202:3306/dit_config?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    username: dcm
+    password: N8xvZ2Q4kP5mT7wL
     driver-class-name: com.mysql.cj.jdbc.Driver
 
     hikari:
@@ -35,4 +35,8 @@ spring:
   config:
     import: nacos:dit-system.yaml
 
+mybatis-flex:
+  mapper-locations: classpath*:mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 

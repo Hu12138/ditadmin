@@ -1,5 +1,7 @@
 package site.ahzx.flex.filter;
 
+import lombok.extern.slf4j.Slf4j;
+import site.ahzx.flex.model.LoginUser;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,10 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import site.ahzx.flex.context.LoginContext;
-import site.ahzx.flex.model.LoginUser;
 
 import java.io.IOException;
 
+@Slf4j
 @Order(1)
 @Component
 public class LoginContextFilter extends OncePerRequestFilter {
@@ -46,6 +48,7 @@ public class LoginContextFilter extends OncePerRequestFilter {
 
                 // 自定义字段也一样处理……
                 LoginContext.set(user);
+                log.info("LoginContextFilter: {}", user);
             }
             filterChain.doFilter(request, response);
         } finally {

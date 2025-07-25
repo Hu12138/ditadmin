@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginRequest {
+    private Long tenantId;
     private String username;
     private String password;
 //    private String loginType;
