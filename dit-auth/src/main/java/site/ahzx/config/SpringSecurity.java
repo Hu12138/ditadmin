@@ -4,24 +4,34 @@ package site.ahzx.config;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import site.ahzx.service.RemoteUserDetailsService;
 
 @Configuration
 public class SpringSecurity {
     private final SecurityUrlProperties securityUrlProperties;
+    private final RemoteUserDetailsService remoteUserDetailsService;
 
-
-    public SpringSecurity(SecurityUrlProperties securityUrlProperties) {
+    public SpringSecurity(SecurityUrlProperties securityUrlProperties, RemoteUserDetailsService remoteUserDetailsService) {
         this.securityUrlProperties = securityUrlProperties;
+        this.remoteUserDetailsService = remoteUserDetailsService;
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, ServerProperties serverProperties) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, RemoteAuthenticationProvider remoteAuthenticationProvider) throws Exception {
 
         http
-                .formLogin(form -> form.disable()) // 禁用默认表单登录
+                .authenticationProvider(remoteAuthenticationProvider)
+                .formLogin(AbstractHttpConfigurer::disable) // 禁用默认表单登录
                 .csrf(AbstractHttpConfigurer::disable)
 //                .csrf(x -> x.disable())
                 .authorizeHttpRequests(
@@ -49,5 +59,19 @@ public class SpringSecurity {
                 }
         );
         return http.build();
+    }
+
+    // 提供 PasswordEncoder Bean
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+        return NoOpPasswordEncoder.getInstance();
+    }
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService( remoteUserDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(provider);
     }
 }

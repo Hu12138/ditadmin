@@ -39,4 +39,9 @@ mybatis-flex:
   mapper-locations: classpath*:mapper/**/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
+logging:
+  level:
+    root: INFO            # 全局日志级别
+    org.springframework: INFO      # Spring 框架日志
+    com.mybatisflex: INFO           # MyBatis-Flex 日志
+    org.apache.ibatis: INFO         # MyBatis 日志

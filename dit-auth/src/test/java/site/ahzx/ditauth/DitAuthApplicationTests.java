@@ -9,5 +9,9 @@ class DitAuthApplicationTests {
     @Test
     void contextLoads() {
     }
+@Test
+    void getUserDtoByUsername() {
+
+    }
 
 }

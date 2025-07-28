@@ -1,4 +1,4 @@
-package util;
+package site.ahzx.config;
 
 import java.security.Key;
 
@@ -11,13 +11,14 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+@Component
 @Slf4j
 public class JwtTokenUtil {;
     @Value("${jwt.secret}")
