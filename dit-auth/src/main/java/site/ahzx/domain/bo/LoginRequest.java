@@ -8,8 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginRequest {
-    private Long tenantId;
+    private String clientId;
+    private String tenantId;
     private String username;
     private String password;
+    private String grantType;
+    private String uuid;
+    private String code;
 //    private String loginType;
 }

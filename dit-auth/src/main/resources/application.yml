@@ -5,6 +5,12 @@ server:
 spring:
   application:
     name: dit-auth-service
+  data:
+    redis:
+      host: 192.168.8.202
+      port: 16379
+      password: 123456  # 如果没有密码可省略
+      timeout: 5000
 
   cloud:
     nacos:

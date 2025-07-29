@@ -32,7 +32,7 @@ public class LoginContextFilter extends OncePerRequestFilter {
 
             if (StringUtils.hasText(tenantIdStr)) {
                 LoginUser user = new LoginUser();
-                user.setTenantId(Long.valueOf(tenantIdStr));
+                user.setTenantId(tenantIdStr);
 
                 // 其他字段可选填充
                 String userIdStr = request.getHeader("x-user-id");

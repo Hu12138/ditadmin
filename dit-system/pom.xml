@@ -16,6 +16,7 @@
         <lombok.version>1.18.24</lombok.version>
         <jjwt.version>0.12.5</jjwt.version>
         <mybatis-flex.version>1.11.0</mybatis-flex.version>
+        <hutools.version>5.8.22</hutools.version>
     </properties>
     <dependencies>
         <!--依赖-->
@@ -109,6 +110,11 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.22</version> <!-- 根据需要使用最新版本 -->
         </dependency>
     </dependencies>
 

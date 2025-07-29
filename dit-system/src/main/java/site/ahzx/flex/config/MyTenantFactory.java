@@ -6,7 +6,8 @@ import site.ahzx.flex.context.LoginContext;
 public class MyTenantFactory implements TenantFactory {
     @Override
     public Object[] getTenantIds() {
-        Long tenantId = LoginContext.get().getTenantId();
+
+        String tenantId = LoginContext.get().getTenantId();
         return new Object[]{tenantId};
     }
 

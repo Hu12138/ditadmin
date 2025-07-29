@@ -47,5 +47,5 @@ public class BaseEntity <T extends BaseEntity<T>> extends Model<T> implements Se
      * 租户ID
      */
     @Column(tenantId = true)
-    private Long tenantId;
+    private String tenantId;
 }

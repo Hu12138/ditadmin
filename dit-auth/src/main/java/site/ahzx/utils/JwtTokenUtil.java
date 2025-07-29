@@ -1,4 +1,4 @@
-package site.ahzx.config;
+package site.ahzx.utils;
 
 import java.security.Key;
 
@@ -25,7 +25,7 @@ public class JwtTokenUtil {;
     private String secret;
 
     @Value("${jwt.expiration-seconds}")
-    private long expirationHours;
+    private long expirationSeconds;
 
     private Key key;  // 使用安全的Key类型替代原始字符串
     // 初始化密钥
@@ -33,6 +33,8 @@ public class JwtTokenUtil {;
     public void init() {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
+
+
 
     /**
      * 生成Token
@@ -67,7 +69,7 @@ public class JwtTokenUtil {;
                 .claims(claims)
                 .subject(username)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expirationHours))
+                .expiration(new Date(System.currentTimeMillis() + expirationSeconds*1000))
                 .signWith(key)
                 .compact();
     }
