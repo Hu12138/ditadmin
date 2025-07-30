@@ -26,7 +26,7 @@ public class LoginContextFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
             log.debug("in doFilterInternal");
-            log.debug("request : {}", request);
+            log.debug("request : {}", request.toString());
             String tenantIdStr = request.getHeader("x-tenant-id");
             log.debug("tenantIdStr: {}", tenantIdStr);
 

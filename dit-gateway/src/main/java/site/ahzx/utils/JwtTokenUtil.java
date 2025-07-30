@@ -1,12 +1,7 @@
 package site.ahzx.utils;
 
-import java.security.Key;
-
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SecurityException;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,7 +46,7 @@ public class JwtTokenUtil {;
      * └─ 生成Signature
      *       └─ 用密钥对Header+Payload签名
      */
-    public String generateToken(String username, Collection<? extends GrantedAuthority> roles, String tenantId) {
+    public String generateToken(String username, Collection<? extends GrantedAuthority> roles) {
 
         List<? extends GrantedAuthority> safeRoles =
                 new ArrayList<>(Optional.ofNullable(roles).orElse(Collections.emptyList()));
@@ -64,8 +60,6 @@ public class JwtTokenUtil {;
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList())
         );
-        claims.put("tenantId",tenantId);
-        claims.put("username",username);
 
         return Jwts.builder()
                 .claims(claims)
@@ -76,11 +70,14 @@ public class JwtTokenUtil {;
                 .compact();
     }
 
-    public Boolean validateToken(String token) {
+    public Claims parseToken(String token) {
         try {
-            JwtParser parser = Jwts.parser().verifyWith((SecretKey) key).build();
-            parser.parseSignedClaims(token);
-            return true;
+            JwtParser parser = Jwts.parser()
+                    .verifyWith((SecretKey) key)
+                    .build();
+
+            Jws<Claims> jwsClaims = parser.parseSignedClaims(token);
+            return jwsClaims.getPayload(); // 返回解析出的 Claims
         } catch (ExpiredJwtException ex) {
             // Token已过期
             log.info("Token expired", ex);
@@ -91,7 +88,7 @@ public class JwtTokenUtil {;
             // 其他无效Token情况
             log.info("Other exception", e);
         }
-        return false;
+        return null;
     }
 
 

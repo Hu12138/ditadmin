@@ -1,11 +1,15 @@
 package site.ahzx.domain.entity;
 
+import com.mybatisflex.annotation.RelationManyToMany;
+import com.mybatisflex.annotation.RelationOneToMany;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 @Data(staticConstructor = "create")
 @EqualsAndHashCode(callSuper = true) // 明确包含父类字段
@@ -48,5 +52,18 @@ public class SysUsers extends BaseEntity<SysUsers> implements Serializable {
      */
     private Integer status;
 
+    @RelationManyToMany(
+            joinTable = "sys_user_roles",
+            selfField = "id", joinSelfColumn = "user_id",
+            targetField = "id", joinTargetColumn = "role_id"
+    )
+    private List<SysRoles> roles;
+
+    @RelationManyToMany(
+            joinTable = "sys_user_depts",
+            selfField = "id", joinSelfColumn = "user_id",
+            targetField = "id", joinTargetColumn = "dept_id"
+    )
+    private List<SysDepts> depts;
 
 }

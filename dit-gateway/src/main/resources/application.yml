@@ -17,6 +17,11 @@ spring:
         namespace: 60a9e1d6-a938-4cb7-966c-5e8482ae5612
   config:
     import: nacos:dit-gateway.yaml
+jwt:
+  secret: yuzhouwudichaojidashuaibihuxuefengshiye # 请替换为实际的JWT密钥
+  expiration-seconds: 86400 # token有效期(秒)
+  token-header: Authorization
+  token-prefix: "Bearer "
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG

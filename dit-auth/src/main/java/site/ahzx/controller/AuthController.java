@@ -93,7 +93,7 @@ public class AuthController {
 
             String token = jwtUtil.generateToken(
                     loginRequest.getUsername(),
-                    authentication.getAuthorities()
+                    authentication.getAuthorities(),tenantId
             );
 
             LoginVO loginVO = new LoginVO();

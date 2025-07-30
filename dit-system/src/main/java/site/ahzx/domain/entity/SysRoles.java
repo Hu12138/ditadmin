@@ -1,11 +1,13 @@
 package site.ahzx.domain.entity;
 
+import com.mybatisflex.annotation.RelationManyToMany;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Data(staticConstructor = "create")
 @EqualsAndHashCode(callSuper = true)
@@ -39,5 +41,12 @@ public class SysRoles extends BaseEntity<SysRoles> implements Serializable {
      * 状态 0：禁用 1：正常
      */
     private Integer status;
+
+    @RelationManyToMany(
+            joinTable = "sys_role_menus",
+            selfField = "id", joinSelfColumn = "role_id",
+            targetField = "id", joinTargetColumn = "menu_id"
+    )
+    private List<SysMenus> menus;
 
 }
