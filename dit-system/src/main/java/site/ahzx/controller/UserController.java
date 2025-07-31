@@ -1,8 +1,10 @@
 package site.ahzx.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import site.ahzx.domain.entity.SysDepts;
 import site.ahzx.domain.entity.SysUsers;
+import site.ahzx.domain.vo.LoginGetUserInfoVO;
 import site.ahzx.service.UserService;
 import site.ahzx.util.R;
 
@@ -17,6 +19,13 @@ public class UserController {
     @GetMapping("/test")
     public R<?> test() {
         return R.ok("Hello, world");
+    }
+
+    @GetMapping("getInfo")
+    public R<?> getInfo(HttpServletRequest request) {
+        String username = request.getHeader("x-user-name");
+        LoginGetUserInfoVO loginUserInfo = userService.getLoginUserInfo(username);
+        return R.ok("获取成功", loginUserInfo);
     }
 
 

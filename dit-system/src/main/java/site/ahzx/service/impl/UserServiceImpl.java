@@ -5,6 +5,7 @@ import com.mybatisflex.core.row.Row;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import site.ahzx.domain.vo.LoginGetUserInfoVO;
 import site.ahzx.domain.vo.SysUserVO;
 import site.ahzx.domain.entity.SysUsers;
 import site.ahzx.mapper.SysUsersMapper;
@@ -73,6 +74,29 @@ public class UserServiceImpl implements UserService {
         dto.setPermissions(new ArrayList<>(perms));
         log.info("dto is {}", dto);
         return dto;
+    }
+
+    @Override
+    public LoginGetUserInfoVO getLoginUserInfo(String username) {
+
+        QueryWrapper queryWrapper = QueryWrapper.create()
+                        .select().where(SYS_USERS.USERNAME.eq(username));
+        SysUsers sysUser = sysUsersMapper.selectOneWithRelationsByQuery(queryWrapper);
+        sysUser.setPassword(null);
+
+        LoginGetUserInfoVO loginGetUserInfoVO = new LoginGetUserInfoVO();
+        loginGetUserInfoVO.setUser(sysUser);
+        sysUser.getRoles().forEach(
+                role -> {
+                    loginGetUserInfoVO.getRoles().add(role.getRoleCode());
+                    role.getMenus().forEach(
+                            menu -> loginGetUserInfoVO.getPermissions().add(menu.getPerms())
+                    );
+                }
+
+        );
+
+        return loginGetUserInfoVO;
     }
 
 }
