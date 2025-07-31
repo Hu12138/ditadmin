@@ -7,12 +7,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import site.ahzx.config.AuthUserDetails;
+import site.ahzx.context.RequestHeaderContext;
 import site.ahzx.domain.dto.SysUserDTO;
 import site.ahzx.feign.RemoteUserFeign;
 import site.ahzx.service.RemoteUserDetailsService;
 import util.R;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +48,9 @@ public class RemoteUserDetailsServiceImpl implements RemoteUserDetailsService {
         if (result == null || result.getCode() != 200 || result.getData() == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
+        Map<String, String> headers = new HashMap<>();
+        headers.put("x-user-id", String.valueOf(sysUser.getUserId()));
+        RequestHeaderContext.setHeaders(headers);
 
         // 组装权限信息（角色 + 权限）
         List<SimpleGrantedAuthority> authorities = sysUser.getRoles().stream()
@@ -61,6 +67,7 @@ public class RemoteUserDetailsServiceImpl implements RemoteUserDetailsService {
                 sysUser.getUsername(),
                 sysUser.getPassword(),
                 sysUser.getTenantId(),
+                sysUser.getUserId(),
                 authorities
         );
     }

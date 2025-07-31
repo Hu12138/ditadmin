@@ -12,6 +12,7 @@ public class AuthUserDetails implements UserDetails {
     private final String username;
     private final String password;
     private final Long tenantId;
+    private final Long userId;
 //    private final boolean enabled;
     private final Collection<? extends GrantedAuthority> authorities;
 

@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 public class SysUserDTO {
     private Long tenantId;
+    private Long userId;
     private String username;
     private String password;
     private List<String> roles;

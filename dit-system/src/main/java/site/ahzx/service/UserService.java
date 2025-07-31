@@ -1,6 +1,7 @@
 package site.ahzx.service;
 
 import site.ahzx.domain.vo.LoginGetUserInfoVO;
+import site.ahzx.domain.vo.RouterVO;
 import site.ahzx.domain.vo.SysUserVO;
 import site.ahzx.domain.entity.SysUsers;
 
@@ -16,4 +17,5 @@ public interface UserService {
      * 通过用户名获取用户信息,给登录接口返回的
      */
     public LoginGetUserInfoVO getLoginUserInfo(String username);
+
 }

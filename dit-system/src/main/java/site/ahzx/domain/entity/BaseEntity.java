@@ -33,7 +33,7 @@ public class BaseEntity <T extends BaseEntity<T>> extends Model<T> implements Se
     /**
      * 创建者
      */
-    private Long createdBy;
+    private String  createdBy;
     /**
      * 更新时间
      */
@@ -41,7 +41,7 @@ public class BaseEntity <T extends BaseEntity<T>> extends Model<T> implements Se
     /**
      * 更新者
      */
-    private Long updatedBy;
+    private String updatedBy;
 
     /**
      * 租户ID

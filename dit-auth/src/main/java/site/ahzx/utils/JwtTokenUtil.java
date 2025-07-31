@@ -50,7 +50,7 @@ public class JwtTokenUtil {;
      * └─ 生成Signature
      *       └─ 用密钥对Header+Payload签名
      */
-    public String generateToken(String username, Collection<? extends GrantedAuthority> roles, String tenantId) {
+    public String generateToken(String username, Collection<? extends GrantedAuthority> roles, String tenantId, Long userId) {
 
         List<? extends GrantedAuthority> safeRoles =
                 new ArrayList<>(Optional.ofNullable(roles).orElse(Collections.emptyList()));
@@ -66,6 +66,7 @@ public class JwtTokenUtil {;
         );
         claims.put("tenantId",tenantId);
         claims.put("username",username);
+        claims.put("userId",userId);
 
         return Jwts.builder()
                 .claims(claims)

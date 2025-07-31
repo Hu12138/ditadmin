@@ -39,9 +39,18 @@ public class SysMenus extends BaseEntity<SysMenus> implements Serializable {
      */
     private String queryParam;
     /**
+     * 路由名称
+     */
+    private String routeName;
+
+    /**
      * 是否为外链（0是 1否）
      */
-    private String isFrame;
+    private int isFrame;
+    /**
+     * 是否缓存（0 缓存 1不缓存）
+     */
+    private int isCache;
     /**
      * 图标
      */
@@ -49,7 +58,7 @@ public class SysMenus extends BaseEntity<SysMenus> implements Serializable {
     /**
      * 菜单类型（M目录 C菜单 F按钮）
      */
-    private Integer menuType;
+    private String   menuType;
     /**
      * 显示状态（0显示 1隐藏）
      */

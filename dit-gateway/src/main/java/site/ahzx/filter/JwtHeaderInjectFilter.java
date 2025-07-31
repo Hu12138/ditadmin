@@ -29,16 +29,18 @@ public class JwtHeaderInjectFilter implements GlobalFilter, Ordered {
                                 .toList();
 
                         String tenantId = "";
-
+                        String userId = "";
                         Object details = auth.getDetails();
                         if (details instanceof java.util.Map<?, ?> map) {
                             tenantId = String.valueOf(map.get("tenantId"));
+                            userId = String.valueOf(map.get("userId"));
                         }
 
                         ServerHttpRequest mutatedRequest = exchange.getRequest().mutate()
                                 .header("x-user-name", username)
                                 .header("x-user-roles", String.join(",", roles))
                                 .header("x-tenant-id", tenantId)
+                                .header("x-user-id", userId)
                                 .build();
 
                         ServerWebExchange mutatedExchange = exchange.mutate()

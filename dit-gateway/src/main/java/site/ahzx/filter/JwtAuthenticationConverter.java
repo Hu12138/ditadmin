@@ -43,12 +43,12 @@ public class JwtAuthenticationConverter implements ServerAuthenticationConverter
                 List<String> roles = claims.get("roles", List.class);
                 String tenantId = claims.get("tenantId",String.class);
                 String username = claims.get("username",String.class);
-
+                Long userId = claims.get("userId",Long.class);
                 // 构建认证对象
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(username, token,
                                 roles.stream().map(r -> new SimpleGrantedAuthority("ROLE_" + r)).toList());
-                auth.setDetails(Map.of("tenantId", tenantId));
+                auth.setDetails(Map.of("tenantId", tenantId,"userId", userId));
                 return Mono.just(auth);
             } else {
                 log.info("JWT token is empty or error");

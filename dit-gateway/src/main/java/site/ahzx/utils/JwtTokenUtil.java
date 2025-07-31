@@ -46,29 +46,7 @@ public class JwtTokenUtil {;
      * └─ 生成Signature
      *       └─ 用密钥对Header+Payload签名
      */
-    public String generateToken(String username, Collection<? extends GrantedAuthority> roles) {
 
-        List<? extends GrantedAuthority> safeRoles =
-                new ArrayList<>(Optional.ofNullable(roles).orElse(Collections.emptyList()));
-        if ( safeRoles.isEmpty()) {
-            log.warn("No roles found for user {}", username);
-        }
-        Map<String, Object> claims = new HashMap<>();
-
-        claims.put("roles", safeRoles.
-                stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList())
-        );
-
-        return Jwts.builder()
-                .claims(claims)
-                .subject(username)
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expirationSeconds*1000))
-                .signWith(key)
-                .compact();
-    }
 
     public Claims parseToken(String token) {
         try {

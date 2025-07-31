@@ -10,6 +10,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import site.ahzx.context.RequestHeaderContext;
@@ -93,7 +94,11 @@ public class AuthController {
 
             String token = jwtUtil.generateToken(
                     loginRequest.getUsername(),
-                    authentication.getAuthorities(),tenantId
+                    authentication.getAuthorities(),
+                    tenantId,
+                    Long.valueOf(RequestHeaderContext.getHeaders().get("x-user-id"))
+
+
             );
 
             LoginVO loginVO = new LoginVO();
@@ -121,6 +126,8 @@ public class AuthController {
         } catch (Exception e) {
             log.error("系统异常: ", e);
             return R.fail("系统繁忙，请稍后再试");
+        } finally {
+            RequestHeaderContext.clear();
         }
     }
 
