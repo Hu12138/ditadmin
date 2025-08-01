@@ -77,23 +77,4 @@ public class JwtTokenUtil {;
                 .compact();
     }
 
-    public Boolean validateToken(String token) {
-        try {
-            JwtParser parser = Jwts.parser().verifyWith((SecretKey) key).build();
-            parser.parseSignedClaims(token);
-            return true;
-        } catch (ExpiredJwtException ex) {
-            // Token已过期
-            log.info("Token expired", ex);
-        } catch (SecurityException ex) {
-            // 签名验证失败
-            log.info("Security exception", ex);
-        } catch (Exception e) {
-            // 其他无效Token情况
-            log.info("Other exception", e);
-        }
-        return false;
-    }
-
-
 }

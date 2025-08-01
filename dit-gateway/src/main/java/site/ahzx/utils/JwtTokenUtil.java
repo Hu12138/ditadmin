@@ -32,20 +32,7 @@ public class JwtTokenUtil {;
 
 
 
-    /**
-     * 生成Token
-     * JWT 本身不是加密，只是编码，不要放敏感信息如密码
-     * @param username 用户名
-     * @param roles 角色
-     * @return token
-     * ├─ 构建Header
-     * │     └─ 包含算法(如HS256)、令牌类型(JWT)
-     * ├─ 构建Payload
-     * │     ├─ 标准声明(过期时间、签发时间、用户名)
-     * │     └─ 自定义声明(角色列表roles)
-     * └─ 生成Signature
-     *       └─ 用密钥对Header+Payload签名
-     */
+
 
 
     public Claims parseToken(String token) {

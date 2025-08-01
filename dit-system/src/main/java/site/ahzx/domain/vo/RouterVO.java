@@ -12,6 +12,7 @@ public class RouterVO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private Long id; // 对应 sys_menus.id
     /**
      * 路由名字
      */

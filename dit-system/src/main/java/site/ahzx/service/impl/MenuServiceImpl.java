@@ -1,5 +1,6 @@
 package site.ahzx.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class MenuServiceImpl implements MenuService {
 
     @Autowired
@@ -42,10 +44,10 @@ public class MenuServiceImpl implements MenuService {
                 // 缓存
                 redisTemplate.opsForValue().set(key, menus, Duration.ofHours(3));
             }
-
+            log.debug("menus are : {}",menus);
             // 构建 RouterVO 树结构
-            List<RouterVO> routerList = buildRouterTree(menus);
-
+            List<RouterVO> routerList = MenuRouterBuilder.buildMenuTree(menus);
+            log.debug("routerList is : {}",routerList);
 
             return routerList;
 
@@ -55,40 +57,4 @@ public class MenuServiceImpl implements MenuService {
         }
     }
 
-    /**
-     * 把 SysMenus 列表转换为 RouterVO 树结构
-     */
-    private List<RouterVO> buildRouterTree(List<SysMenus> menuList) {
-        Map<Long, RouterVO> idToRouter = new HashMap<>();
-        List<RouterVO> rootRouters = new ArrayList<>();
-
-        for (SysMenus menu : menuList) {
-            if ("F".equals(menu.getMenuType())) continue; // 过滤按钮类型
-
-            RouterVO router = new RouterVO();
-            router.setName(menu.getRouteName());
-            router.setPath(menu.getPath());
-            router.setComponent(menu.getComponent());
-            router.setQuery(menu.getQueryParam());
-            router.setHidden("1".equals(menu.getVisible()));
-            router.setAlwaysShow(false); // 可根据需要调整
-            router.setMeta(new MetaVO(menu.getMenuName(), menu.getIcon(), menu.getIsCache() == 1));
-
-            idToRouter.put(menu.getId(), router);
-
-            if (menu.getParentId() == 0) {
-                rootRouters.add(router);
-            } else {
-                RouterVO parent = idToRouter.get(menu.getParentId());
-                if (parent != null) {
-                    if (parent.getChildren() == null) {
-                        parent.setChildren(new ArrayList<>());
-                    }
-                    parent.getChildren().add(router);
-                }
-            }
-        }
-
-        return rootRouters;
-    }
 }
