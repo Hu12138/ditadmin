@@ -1,5 +1,6 @@
 package site.ahzx.domain.entity;
 
+import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,9 +12,14 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Table("sys_depts")
 @Data(staticConstructor = "create")
-public class SysDepts extends BaseEntity<SysDepts> implements Serializable {
+public class SysDepts extends TenantBaseEntity<SysDepts> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+    /**
+     * 主键
+     */
+    @Id
+    private Long id;
     /**
      * 部门上级id
      */

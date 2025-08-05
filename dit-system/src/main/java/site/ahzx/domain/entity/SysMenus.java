@@ -1,5 +1,6 @@
 package site.ahzx.domain.entity;
 
+import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,13 +8,23 @@ import lombok.EqualsAndHashCode;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * 考虑了一下，菜单还是不用继承tenant了，因为菜单是公共的，不区分租户
+ */
 @Table("sys_menus")
 @Data(staticConstructor = "create")
 @EqualsAndHashCode(callSuper = true)
 public class SysMenus extends BaseEntity<SysMenus> implements Serializable {
+    /**
+     * 序列化ID
+     */
     @Serial
     private static final long serialVersionUID = 1L;
-
+    /**
+     * 主键
+     */
+    @Id
+    private Long id;
     /**
      * 菜单ID
      */

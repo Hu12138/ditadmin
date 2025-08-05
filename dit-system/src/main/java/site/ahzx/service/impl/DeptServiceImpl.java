@@ -34,6 +34,7 @@ public class DeptServiceImpl implements DeptService {
                     extra.put("ancestors", dept.getAncestors());
                     extra.put("status", dept.getStatus());
                     extra.put("leader", dept.getLeader());
+                    extra.put("label", dept.getDeptName());
                     node.setExtra(extra);
 //                    node.setExtra(Map.of(
 //                            "ancestors", dept.getAncestors(),

@@ -20,11 +20,7 @@ import lombok.experimental.Accessors;
 public class BaseEntity <T extends BaseEntity<T>> extends Model<T> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    /**
-     * 主键
-     */
-    @Id
-    private Long id;
+
 
     /**
      * 创建时间
@@ -43,9 +39,4 @@ public class BaseEntity <T extends BaseEntity<T>> extends Model<T> implements Se
      */
     private String updatedBy;
 
-    /**
-     * 租户ID
-     */
-    @Column(tenantId = true)
-    private String tenantId;
 }

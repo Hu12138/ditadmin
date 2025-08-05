@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 public class SysUserNoPassVO  implements Serializable {
@@ -39,4 +40,6 @@ public class SysUserNoPassVO  implements Serializable {
      * 状态 （0正常 1停用）
      */
     private Integer status;
+
+    private LocalDateTime createdAt;
 }

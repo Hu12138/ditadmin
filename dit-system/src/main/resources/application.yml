@@ -53,3 +53,5 @@ logging:
     org.springframework: INFO      # Spring 框架日志
     com.mybatisflex: INFO           # MyBatis-Flex 日志
     org.apache.ibatis: INFO         # MyBatis 日志
+    org.springframework.security: DEBUG  # 开启 Spring Security debug 日志
+    org.springframework.security.web: DEBUG  # 更详细的 Web 安全日志

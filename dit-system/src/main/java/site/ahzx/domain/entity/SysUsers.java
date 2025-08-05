@@ -1,5 +1,6 @@
 package site.ahzx.domain.entity;
 
+import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.RelationManyToMany;
 import com.mybatisflex.annotation.RelationOneToMany;
 import com.mybatisflex.annotation.Table;
@@ -14,10 +15,14 @@ import java.util.Map;
 @Data(staticConstructor = "create")
 @EqualsAndHashCode(callSuper = true) // 明确包含父类字段
 @Table("sys_users")
-public class SysUsers extends BaseEntity<SysUsers> implements Serializable {
+public class SysUsers extends TenantBaseEntity<SysUsers> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
+    /**
+     * 主键
+     */
+    @Id
+    private Long id;
     /**
      * 用户名
      */

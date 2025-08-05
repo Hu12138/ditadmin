@@ -1,5 +1,6 @@
 package site.ahzx.domain.entity;
 
+import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.RelationManyToMany;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
@@ -12,10 +13,14 @@ import java.util.List;
 @Data(staticConstructor = "create")
 @EqualsAndHashCode(callSuper = true)
 @Table("sys_roles")
-public class SysRoles extends BaseEntity<SysRoles> implements Serializable {
+public class SysRoles extends TenantBaseEntity<SysRoles> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
+    /**
+     * 主键
+     */
+    @Id
+    private Long id;
     /**
      * 角色名称（可以中文）
      */

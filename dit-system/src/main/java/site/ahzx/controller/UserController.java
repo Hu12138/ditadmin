@@ -8,9 +8,11 @@ import site.ahzx.domain.bo.PageBO;
 import site.ahzx.domain.entity.SysDepts;
 import site.ahzx.domain.entity.SysUsers;
 import site.ahzx.domain.vo.LoginGetUserInfoVO;
+import site.ahzx.domain.vo.SysUserNoPassVO;
 import site.ahzx.service.DeptService;
 import site.ahzx.service.UserService;
 import site.ahzx.util.R;
+import site.ahzx.util.TableDataInfo;
 
 import java.util.List;
 
@@ -47,7 +49,8 @@ public class UserController {
     @GetMapping("/list")
     public R<?> list(PageBO pageBO){
 
-        return R.ok("");
+        TableDataInfo<SysUserNoPassVO> userList = userService.getUserList(pageBO);
+        return R.ok(userList);
 
     }
 
