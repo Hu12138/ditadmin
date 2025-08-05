@@ -1,9 +1,13 @@
 package site.ahzx.service;
 
+import site.ahzx.domain.bo.PageBO;
 import site.ahzx.domain.vo.LoginGetUserInfoVO;
 import site.ahzx.domain.vo.RouterVO;
+import site.ahzx.domain.vo.SysUserNoPassVO;
 import site.ahzx.domain.vo.SysUserVO;
 import site.ahzx.domain.entity.SysUsers;
+import site.ahzx.util.R;
+import site.ahzx.util.TableDataInfo;
 
 public interface UserService {
     public SysUsers getUserByUsername(String username);
@@ -18,4 +22,5 @@ public interface UserService {
      */
     public LoginGetUserInfoVO getLoginUserInfo(String username);
 
+    public TableDataInfo<SysUserNoPassVO> getUserList(PageBO pageBO);
 }

@@ -1,19 +1,24 @@
 package site.ahzx.service.impl;
 
+import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.row.Row;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import site.ahzx.domain.bo.PageBO;
 import site.ahzx.domain.entity.SysMenus;
 import site.ahzx.domain.entity.SysRoles;
 import site.ahzx.domain.vo.LoginGetUserInfoVO;
+import site.ahzx.domain.vo.SysUserNoPassVO;
 import site.ahzx.domain.vo.SysUserVO;
 import site.ahzx.domain.entity.SysUsers;
 import site.ahzx.flex.context.LoginContext;
 import site.ahzx.mapper.SysUsersMapper;
 import site.ahzx.service.UserService;
+import site.ahzx.util.R;
+import site.ahzx.util.TableDataInfo;
 
 import java.time.Duration;
 import java.util.*;
@@ -164,6 +169,16 @@ public class UserServiceImpl implements UserService {
 
 
         return loginGetUserInfoVO;
+    }
+
+    @Override
+    public TableDataInfo<SysUserNoPassVO> getUserList(PageBO pageBO) {
+//        Page<SysUserNoPassVO> page = SysUsers.create().page(Page.of(pageBO.getPageNum(), pageBO.getPageSize()));
+
+        Page<SysUserNoPassVO> usersPage = sysUsersMapper.paginateAs(1, 2, QueryWrapper.create().select().from(SYS_USERS), SysUserNoPassVO.class);
+
+        return TableDataInfo.build(usersPage);
+
     }
 
 

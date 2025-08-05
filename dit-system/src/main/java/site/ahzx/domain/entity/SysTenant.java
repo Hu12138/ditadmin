@@ -46,7 +46,7 @@ public class SysTenant extends BaseEntity<SysTenant> implements Serializable {
      */
     private String remark;
     /**
-     * 状态 0：禁用 1：正常
+     * 状态 （0正常 1停用）
      */
     private String status;
 }

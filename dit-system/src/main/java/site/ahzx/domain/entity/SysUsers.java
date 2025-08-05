@@ -48,7 +48,7 @@ public class SysUsers extends BaseEntity<SysUsers> implements Serializable {
      */
     private Integer sex;
     /**
-     * 状态 0：禁用 1：正常
+     * 状态 （0正常 1停用）
      */
     private Integer status;
 

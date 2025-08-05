@@ -38,7 +38,7 @@ public class SysRoles extends BaseEntity<SysRoles> implements Serializable {
      */
     private String dataScope;
     /**
-     * 状态 0：禁用 1：正常
+     * 状态 （0正常 1停用）
      */
     private Integer status;
 
