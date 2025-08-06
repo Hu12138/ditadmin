@@ -5,8 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import site.ahzx.domain.bo.PageBO;
-import site.ahzx.domain.entity.SysDepts;
-import site.ahzx.domain.entity.SysUsers;
+import site.ahzx.domain.bo.SysUserBO;
 import site.ahzx.domain.vo.LoginGetUserInfoVO;
 import site.ahzx.domain.vo.SysUserNoPassVO;
 import site.ahzx.service.DeptService;
@@ -52,6 +51,26 @@ public class UserController {
         TableDataInfo<SysUserNoPassVO> userList = userService.getUserList(pageBO);
         return R.ok(userList);
 
+    }
+
+    @PostMapping
+    public R<?> addUser(@RequestBody SysUserBO userBO){
+        //TODO：0.检查是否有部门数据权限
+        //1.检查用户是否存在，手机号、邮箱，用户名
+        if(userService.checkUserExist(userBO.getUserName())){
+            return R.fail("用户名已存在");
+        } else if (userService.checkPhoneExist(userBO.getPhonenumber() )){
+            return R.fail("手机号已存在");
+        } else if (userService.checkEmailExist(userBO.getEmail() )){
+            return R.fail("邮箱已存在");
+        }
+
+        //TODO: 2.判断租户是否有多余的额度
+
+        //3.添加用户
+        //TODO: 密码加密
+        Integer user = userService.addUser(userBO);
+        return user > 0 ? R.ok("添加成功") : R.fail("添加失败");
     }
 
 

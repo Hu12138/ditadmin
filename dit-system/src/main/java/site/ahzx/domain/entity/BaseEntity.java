@@ -25,18 +25,18 @@ public class BaseEntity <T extends BaseEntity<T>> extends Model<T> implements Se
     /**
      * 创建时间
      */
-    private LocalDateTime createdAt;
+    private LocalDateTime createTime;
     /**
      * 创建者
      */
-    private String  createdBy;
+    private String  createBy;
     /**
      * 更新时间
      */
-    private LocalDateTime updatedAt;
+    private LocalDateTime updateTime;
     /**
      * 更新者
      */
-    private String updatedBy;
+    private String updateBy;
 
 }

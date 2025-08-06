@@ -4,8 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import site.ahzx.domain.entity.SysMenus;
-import site.ahzx.domain.vo.MetaVO;
+import site.ahzx.domain.entity.SysMenu;
 import site.ahzx.domain.vo.RouterVO;
 import site.ahzx.flex.context.LoginContext;
 import site.ahzx.mapper.SysMenusMapper;
@@ -13,10 +12,7 @@ import site.ahzx.service.MenuService;
 import site.ahzx.constant.RedisCachePrefix;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -33,9 +29,9 @@ public class MenuServiceImpl implements MenuService {
         try {
             String key = RedisCachePrefix.USER_MENUS_PREFIX + LoginContext.get().getTenantId() + ":" + userId;
             @SuppressWarnings("unchecked")
-            List<SysMenus> cachedMenus = (List<SysMenus>) redisTemplate.opsForValue().get(key);
+            List<SysMenu> cachedMenus = (List<SysMenu>) redisTemplate.opsForValue().get(key);
 
-            List<SysMenus> menus;
+            List<SysMenu> menus;
             if (cachedMenus != null && !cachedMenus.isEmpty()) {
                 menus = cachedMenus;
             } else {

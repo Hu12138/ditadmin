@@ -1,23 +1,23 @@
 package site.ahzx.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.row.Row;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import site.ahzx.domain.bo.PageBO;
-import site.ahzx.domain.entity.SysMenus;
-import site.ahzx.domain.entity.SysRoles;
+import site.ahzx.domain.bo.SysUserBO;
+import site.ahzx.domain.entity.SysMenu;
+import site.ahzx.domain.entity.SysRole;
 import site.ahzx.domain.vo.LoginGetUserInfoVO;
 import site.ahzx.domain.vo.SysUserNoPassVO;
 import site.ahzx.domain.vo.SysUserVO;
-import site.ahzx.domain.entity.SysUsers;
+import site.ahzx.domain.entity.SysUser;
 import site.ahzx.flex.context.LoginContext;
 import site.ahzx.mapper.SysUsersMapper;
 import site.ahzx.service.UserService;
-import site.ahzx.util.R;
 import site.ahzx.util.TableDataInfo;
 
 import java.time.Duration;
@@ -47,19 +47,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SysUsers getUserByUsername(String username) {
+    public SysUser getUserByUsername(String username) {
         log.info("username: {}", username);
 //        return SysUsers.create().where("username = ?", username).one();
-        return SysUsers.create().where(SysUsers::getUsername).eq(username).one();
+        return SysUser.create().where(SysUser::getUsername).eq(username).one();
     }
 
     @Override
     public SysUserVO getUserDtoByUsername(String username) {
 
         QueryWrapper queryWrapper = QueryWrapper.create()
-                .select(SYS_USERS.ID.as("user_id"),SYS_USERS.TENANT_ID,SYS_USERS.USERNAME,SYS_USERS.PASSWORD,SYS_ROLES.ROLE_NAME,SYS_MENUS.PERMS)
+                .select(SYS_USERS.USER_ID.as("user_id"),SYS_USERS.TENANT_ID,SYS_USERS.USERNAME,SYS_USERS.PASSWORD,SYS_ROLES.ROLE_NAME,SYS_MENUS.PERMS)
                         .from(SYS_USERS)
-                        .leftJoin(SYS_USER_ROLES).on(SYS_USERS.ID.eq(SYS_USER_ROLES.USER_ID))
+                        .leftJoin(SYS_USER_ROLES).on(SYS_USERS.USER_ID.eq(SYS_USER_ROLES.USER_ID))
                         .leftJoin(SYS_ROLES).on(SYS_USER_ROLES.ROLE_ID.eq(SYS_ROLES.ID))
                         .leftJoin(SYS_ROLE_MENUS).on(SYS_ROLES.ID.eq(SYS_ROLE_MENUS.ROLE_ID))
                         .leftJoin(SYS_MENUS).on(SYS_ROLE_MENUS.MENU_ID.eq(SYS_MENUS.ID))
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
         QueryWrapper queryWrapper = QueryWrapper.create()
                         .select().from(SYS_USERS).where(SYS_USERS.USERNAME.eq(username));
-        SysUsers sysUser = sysUsersMapper.selectOneWithRelationsByQuery(queryWrapper);
+        SysUser sysUser = sysUsersMapper.selectOneWithRelationsByQuery(queryWrapper);
 
         log.debug("sysUser is {}", sysUser);
         sysUser.setPassword(null);
@@ -112,9 +112,9 @@ public class UserServiceImpl implements UserService {
 
         // 去重收集角色 code 和菜单对象
         Set<String> roleCodes = new HashSet<>();
-        Set<SysMenus> menuSet = new HashSet<>();
+        Set<SysMenu> menuSet = new HashSet<>();
 
-        for (SysRoles role : sysUser.getRoles()) {
+        for (SysRole role : sysUser.getRoles()) {
             roleCodes.add(role.getRoleCode());
 
             if (role.getMenus() != null) {
@@ -126,14 +126,14 @@ public class UserServiceImpl implements UserService {
 //            roleCodes.clear();
 //            roleCodes.add("admin");
             menuSet.clear();
-            menuSet.addAll(SysMenus.create().where(SysMenus::getMenuType).in("M","C").list());
+            menuSet.addAll(SysMenu.create().where(SysMenu::getMenuType).in("M","C").list());
         }
         log.debug("menuSet is {}", menuSet);
 
 
 // 从去重后的菜单中提取 perms
         Set<String> permissions = menuSet.stream()
-                .map(SysMenus::getPerms)
+                .map(SysMenu::getPerms)
                 .filter(perm -> perm != null && !perm.isEmpty())
                 .collect(Collectors.toSet());
 
@@ -154,15 +154,15 @@ public class UserServiceImpl implements UserService {
 //        );
         // 写入 Redis
         redisTemplate.opsForValue()
-                .set(USER_ROLES_PREFIX+ LoginContext.get().getTenantId()+":" + sysUser.getId(),
+                .set(USER_ROLES_PREFIX+ LoginContext.get().getTenantId()+":" + sysUser.getUserId(),
                 loginGetUserInfoVO.getRoles(),
                         Duration.ofHours(2));
         redisTemplate.opsForValue()
-                .set(USER_PERMS_PREFIX+ LoginContext.get().getTenantId()+":" + sysUser.getId(),
+                .set(USER_PERMS_PREFIX+ LoginContext.get().getTenantId()+":" + sysUser.getUserId(),
                         loginGetUserInfoVO.getPermissions(),
                         Duration.ofHours(2));
         redisTemplate.opsForValue().set(
-                USER_MENUS_PREFIX + LoginContext.get().getTenantId()+":" + sysUser.getId(),
+                USER_MENUS_PREFIX + LoginContext.get().getTenantId()+":" + sysUser.getUserId(),
                 new ArrayList<>(menuSet),
                 Duration.ofHours(2)
         );
@@ -179,6 +179,39 @@ public class UserServiceImpl implements UserService {
 
         return TableDataInfo.build(usersPage);
 
+    }
+
+    @Override
+    public Boolean checkUserExist(String username) {
+        QueryWrapper query = QueryWrapper.create()
+                .where(SYS_USERS.USERNAME.eq(username));
+
+        long count = sysUsersMapper.selectCountByQuery(query);
+        return count > 0;
+    }
+
+    @Override
+    public Boolean checkPhoneExist(String phone) {
+        QueryWrapper query = QueryWrapper.create()
+                .where(SYS_USERS.PHONE.eq(phone));
+
+        long count = sysUsersMapper.selectCountByQuery(query);
+        return count > 0;
+    }
+
+    @Override
+    public Boolean checkEmailExist(String email) {
+        QueryWrapper query = QueryWrapper.create()
+                .where(SYS_USERS.EMAIL.eq(email));
+
+        long count = sysUsersMapper.selectCountByQuery(query);
+        return count > 0;
+    }
+
+    @Override
+    public Integer addUser(SysUserBO userBO) {
+        SysUser user = BeanUtil.copyProperties(userBO, SysUser.class);
+        return sysUsersMapper.insert(user);
     }
 
 

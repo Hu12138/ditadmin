@@ -4,7 +4,7 @@ import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
 import org.springframework.stereotype.Service;
-import site.ahzx.domain.entity.SysDepts;
+import site.ahzx.domain.entity.SysDept;
 import site.ahzx.service.DeptService;
 
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class DeptServiceImpl implements DeptService {
     @Override
     public List<Tree<Long>> getDeptTree() {
-        List<SysDepts> sysDeptsList = SysDepts.create().list();
+        List<SysDept> sysDeptsList = SysDept.create().list();
 
         // 先转换为 TreeNode 列表
 

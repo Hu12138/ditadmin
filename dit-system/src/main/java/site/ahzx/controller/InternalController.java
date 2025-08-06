@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import site.ahzx.domain.vo.SysUserVO;
-import site.ahzx.domain.entity.SysUsers;
+import site.ahzx.domain.entity.SysUser;
 import site.ahzx.service.UserService;
 import site.ahzx.util.R;
 
@@ -19,7 +19,7 @@ public class InternalController {
 
     @GetMapping("/getUserPassword")
     public R<?> getUserPassword(@RequestParam("username") String username) {
-        SysUsers user = userService.getUserByUsername(username);
+        SysUser user = userService.getUserByUsername(username);
         if (user == null) {
             return R.fail("用户不存在");
         }

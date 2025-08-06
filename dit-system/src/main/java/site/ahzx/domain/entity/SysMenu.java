@@ -11,10 +11,10 @@ import java.io.Serializable;
 /**
  * 考虑了一下，菜单还是不用继承tenant了，因为菜单是公共的，不区分租户
  */
-@Table("sys_menus")
+@Table("sys_menu")
 @Data(staticConstructor = "create")
 @EqualsAndHashCode(callSuper = true)
-public class SysMenus extends BaseEntity<SysMenus> implements Serializable {
+public class SysMenu extends BaseEntity<SysMenu> implements Serializable {
     /**
      * 序列化ID
      */
@@ -24,7 +24,7 @@ public class SysMenus extends BaseEntity<SysMenus> implements Serializable {
      * 主键
      */
     @Id
-    private Long id;
+    private Long menuId;
     /**
      * 菜单ID
      */

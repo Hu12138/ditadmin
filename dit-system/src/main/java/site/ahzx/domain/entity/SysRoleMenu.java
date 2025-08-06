@@ -10,11 +10,17 @@ import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
 @Data(staticConstructor = "create")
-@Table("sys_user_roles")
-public class SysUserRoles extends Model<SysUserRoles> implements Serializable {
+@Table("sys_role_menu")
+public class SysRoleMenu extends Model<SysRoleMenu> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Long userId;
+    /**
+     * 角色ID
+     */
     private Long roleId;
+    /**
+     * 菜单ID
+     */
+    private Long menuId;
 }

@@ -11,6 +11,7 @@ public class SysUserNoPassVO  implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private Long userId;
     /**
      * 用户名
      */

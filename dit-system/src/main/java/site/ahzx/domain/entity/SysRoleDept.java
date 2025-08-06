@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 
 @EqualsAndHashCode(callSuper = true)
-@Table("sys_role_depts")
+@Table("sys_role_dept")
 @Data(staticConstructor = "create")
 public class SysRoleDept extends Model<SysRoleDept> implements Serializable {
     @Serial
