@@ -9,7 +9,7 @@ import java.util.List;
 public class SysUserDTO {
     private Long tenantId;
     private Long userId;
-    private String username;
+    private String userName;
     private String password;
     private List<String> roles;
     private List<String> permissions;

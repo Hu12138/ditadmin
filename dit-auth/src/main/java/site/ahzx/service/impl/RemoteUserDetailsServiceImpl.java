@@ -64,7 +64,7 @@ public class RemoteUserDetailsServiceImpl implements RemoteUserDetailsService {
         }
 
         return new AuthUserDetails(
-                sysUser.getUsername(),
+                sysUser.getUserName(),
                 sysUser.getPassword(),
                 sysUser.getTenantId(),
                 sysUser.getUserId(),

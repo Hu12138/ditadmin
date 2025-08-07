@@ -24,11 +24,12 @@ public class DeptServiceImpl implements DeptService {
         List<TreeNode<Long>> nodes = sysDeptsList.stream()
                 .map(dept -> {
                     TreeNode<Long> node = new TreeNode<>();
-                    node.setId(dept.getId());
+                    node.setId(dept.getDeptId());
                     node.setParentId(dept.getParentId());
                     node.setName(dept.getDeptName());
-                    node.setWeight(Optional.ofNullable(dept.getOrderNum())
-                            .map(Integer::parseInt).orElse(0));
+                    node.setWeight(Optional
+                            .ofNullable(dept.getOrderNum())
+                            .orElse(0));
 
                     Map<String, Object> extra = new HashMap<>();
                     extra.put("ancestors", dept.getAncestors());

@@ -25,11 +25,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static site.ahzx.constant.RedisCachePrefix.*;
-import static site.ahzx.domain.entity.table.SysMenusTableDef.SYS_MENUS;
-import static site.ahzx.domain.entity.table.SysRoleMenusTableDef.SYS_ROLE_MENUS;
-import static site.ahzx.domain.entity.table.SysRolesTableDef.SYS_ROLES;
-import static site.ahzx.domain.entity.table.SysUserRolesTableDef.SYS_USER_ROLES;
-import static site.ahzx.domain.entity.table.SysUsersTableDef.SYS_USERS;
+import static site.ahzx.domain.entity.table.SysMenuTableDef.SYS_MENU;
+import static site.ahzx.domain.entity.table.SysRoleMenuTableDef.SYS_ROLE_MENU;
+import static site.ahzx.domain.entity.table.SysRoleTableDef.SYS_ROLE;
+import static site.ahzx.domain.entity.table.SysUserRoleTableDef.SYS_USER_ROLE;
+import static site.ahzx.domain.entity.table.SysUserTableDef.SYS_USER;
 
 
 @Service
@@ -50,20 +50,21 @@ public class UserServiceImpl implements UserService {
     public SysUser getUserByUsername(String username) {
         log.info("username: {}", username);
 //        return SysUsers.create().where("username = ?", username).one();
-        return SysUser.create().where(SysUser::getUsername).eq(username).one();
+        return SysUser.create().where(SysUser::getUserName).eq(username).one();
     }
 
     @Override
     public SysUserVO getUserDtoByUsername(String username) {
 
         QueryWrapper queryWrapper = QueryWrapper.create()
-                .select(SYS_USERS.USER_ID.as("user_id"),SYS_USERS.TENANT_ID,SYS_USERS.USERNAME,SYS_USERS.PASSWORD,SYS_ROLES.ROLE_NAME,SYS_MENUS.PERMS)
-                        .from(SYS_USERS)
-                        .leftJoin(SYS_USER_ROLES).on(SYS_USERS.USER_ID.eq(SYS_USER_ROLES.USER_ID))
-                        .leftJoin(SYS_ROLES).on(SYS_USER_ROLES.ROLE_ID.eq(SYS_ROLES.ID))
-                        .leftJoin(SYS_ROLE_MENUS).on(SYS_ROLES.ID.eq(SYS_ROLE_MENUS.ROLE_ID))
-                        .leftJoin(SYS_MENUS).on(SYS_ROLE_MENUS.MENU_ID.eq(SYS_MENUS.ID))
-                .where(SYS_USERS.USERNAME.eq(username));
+                .select(SYS_USER.USER_ID.as("user_id"),SYS_USER.TENANT_ID,SYS_USER.USER_NAME,SYS_USER.PASSWORD,
+                        SYS_ROLE.ROLE_NAME,SYS_MENU.PERMS)
+                        .from(SYS_USER)
+                        .leftJoin(SYS_USER_ROLE).on(SYS_USER.USER_ID.eq(SYS_USER_ROLE.USER_ID))
+                        .leftJoin(SYS_ROLE).on(SYS_USER_ROLE.ROLE_ID.eq(SYS_ROLE.ROLE_ID))
+                        .leftJoin(SYS_ROLE_MENU).on(SYS_ROLE.ROLE_ID.eq(SYS_ROLE_MENU.ROLE_ID))
+                        .leftJoin(SYS_MENU).on(SYS_ROLE_MENU.MENU_ID.eq(SYS_MENU.MENU_ID))
+                .where(SYS_USER.USER_NAME.eq(username));
         List<Row> rows= sysUsersMapper.selectRowsByQuery(queryWrapper);
 
         if (rows.isEmpty()) {
@@ -78,7 +79,7 @@ public class UserServiceImpl implements UserService {
             if (dto.getTenantId() == null) {
                 dto.setUserId(row.getLong("user_id"));
                 dto.setTenantId(row.getLong("tenant_id"));
-                dto.setUsername(row.getString("username"));
+                dto.setUserName(row.getString("username"));
                 dto.setPassword(row.getString("password"));
             }
 
@@ -103,7 +104,7 @@ public class UserServiceImpl implements UserService {
     public LoginGetUserInfoVO getLoginUserInfo(String username) {
 
         QueryWrapper queryWrapper = QueryWrapper.create()
-                        .select().from(SYS_USERS).where(SYS_USERS.USERNAME.eq(username));
+                        .select().from(SYS_USER).where(SYS_USER.USER_NAME.eq(username));
         SysUser sysUser = sysUsersMapper.selectOneWithRelationsByQuery(queryWrapper);
 
         log.debug("sysUser is {}", sysUser);
@@ -115,18 +116,23 @@ public class UserServiceImpl implements UserService {
         Set<SysMenu> menuSet = new HashSet<>();
 
         for (SysRole role : sysUser.getRoles()) {
-            roleCodes.add(role.getRoleCode());
+            roleCodes.add(role.getRoleKey());
 
             if (role.getMenus() != null) {
+                log.debug("role.getMenus() is {}", role.getMenus());
                 menuSet.addAll(role.getMenus()); // Set 会自动去重
             }
         }
-        boolean isAdmin = roleCodes.stream().anyMatch("admin"::equalsIgnoreCase);
+        log.debug("roleCodes is {}", roleCodes);
+        boolean isAdmin = roleCodes.stream().anyMatch("superadmin"::equalsIgnoreCase);
+
+        log.debug("isAdmin is {}", isAdmin);
         if (isAdmin) {
 //            roleCodes.clear();
 //            roleCodes.add("admin");
             menuSet.clear();
             menuSet.addAll(SysMenu.create().where(SysMenu::getMenuType).in("M","C").list());
+
         }
         log.debug("menuSet is {}", menuSet);
 
@@ -154,15 +160,15 @@ public class UserServiceImpl implements UserService {
 //        );
         // 写入 Redis
         redisTemplate.opsForValue()
-                .set(USER_ROLES_PREFIX+ LoginContext.get().getTenantId()+":" + sysUser.getUserId(),
+                .set(USER_ROLE_PREFIX+ LoginContext.get().getTenantId()+":" + sysUser.getUserId(),
                 loginGetUserInfoVO.getRoles(),
                         Duration.ofHours(2));
         redisTemplate.opsForValue()
-                .set(USER_PERMS_PREFIX+ LoginContext.get().getTenantId()+":" + sysUser.getUserId(),
+                .set(USER_PERM_PREFIX+ LoginContext.get().getTenantId()+":" + sysUser.getUserId(),
                         loginGetUserInfoVO.getPermissions(),
                         Duration.ofHours(2));
         redisTemplate.opsForValue().set(
-                USER_MENUS_PREFIX + LoginContext.get().getTenantId()+":" + sysUser.getUserId(),
+                USER_MENU_PREFIX + LoginContext.get().getTenantId()+":" + sysUser.getUserId(),
                 new ArrayList<>(menuSet),
                 Duration.ofHours(2)
         );
@@ -175,7 +181,7 @@ public class UserServiceImpl implements UserService {
     public TableDataInfo<SysUserNoPassVO> getUserList(PageBO pageBO) {
 //        Page<SysUserNoPassVO> page = SysUsers.create().page(Page.of(pageBO.getPageNum(), pageBO.getPageSize()));
 
-        Page<SysUserNoPassVO> usersPage = sysUsersMapper.paginateAs(1, 2, QueryWrapper.create().select().from(SYS_USERS), SysUserNoPassVO.class);
+        Page<SysUserNoPassVO> usersPage = sysUsersMapper.paginateAs(1, 2, QueryWrapper.create().select().from(SYS_USER), SysUserNoPassVO.class);
 
         return TableDataInfo.build(usersPage);
 
@@ -184,7 +190,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean checkUserExist(String username) {
         QueryWrapper query = QueryWrapper.create()
-                .where(SYS_USERS.USERNAME.eq(username));
+                .where(SYS_USER.USER_NAME.eq(username));
 
         long count = sysUsersMapper.selectCountByQuery(query);
         return count > 0;
@@ -193,7 +199,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean checkPhoneExist(String phone) {
         QueryWrapper query = QueryWrapper.create()
-                .where(SYS_USERS.PHONE.eq(phone));
+                .where(SYS_USER.PHONE_NUMBER.eq(phone));
 
         long count = sysUsersMapper.selectCountByQuery(query);
         return count > 0;
@@ -202,7 +208,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean checkEmailExist(String email) {
         QueryWrapper query = QueryWrapper.create()
-                .where(SYS_USERS.EMAIL.eq(email));
+                .where(SYS_USER.EMAIL.eq(email));
 
         long count = sysUsersMapper.selectCountByQuery(query);
         return count > 0;

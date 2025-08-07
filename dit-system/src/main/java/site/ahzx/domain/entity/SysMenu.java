@@ -1,12 +1,18 @@
 package site.ahzx.domain.entity;
 
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import site.ahzx.constant.Constants;
+import site.ahzx.constant.SystemConstants;
+import site.ahzx.util.StringUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 考虑了一下，菜单还是不用继承tenant了，因为菜单是公共的，不区分租户
@@ -49,19 +55,16 @@ public class SysMenu extends BaseEntity<SysMenu> implements Serializable {
      * 请求参数
      */
     private String queryParam;
-    /**
-     * 路由名称
-     */
-    private String routeName;
+
 
     /**
      * 是否为外链（0是 1否）
      */
-    private int isFrame;
+    private String isFrame;
     /**
      * 是否缓存（0 缓存 1不缓存）
      */
-    private int isCache;
+    private String isCache;
     /**
      * 图标
      */
@@ -69,7 +72,7 @@ public class SysMenu extends BaseEntity<SysMenu> implements Serializable {
     /**
      * 菜单类型（M目录 C菜单 F按钮）
      */
-    private String   menuType;
+    private String menuType;
     /**
      * 显示状态（0显示 1隐藏）
      */
@@ -87,4 +90,17 @@ public class SysMenu extends BaseEntity<SysMenu> implements Serializable {
      */
     private String remark;
 
+
+    /**
+     * 子菜单
+     */
+    @Column(ignore = true)
+    private List<SysMenu> children = new ArrayList<>();
+
+    public void addChild(SysMenu child) {
+        if (this.children == null) {
+            this.children = new ArrayList<>();
+        }
+        this.children.add(child);
+    }
 }

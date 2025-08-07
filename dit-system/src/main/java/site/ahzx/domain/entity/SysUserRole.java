@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
 @Data(staticConstructor = "create")
-@Table("sys_user_roles")
+@Table("sys_user_role")
 public class SysUserRole extends Model<SysUserRole> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

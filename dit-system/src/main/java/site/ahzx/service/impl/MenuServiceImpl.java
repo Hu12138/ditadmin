@@ -27,7 +27,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<RouterVO> getRouterByUserId(Long userId) {
         try {
-            String key = RedisCachePrefix.USER_MENUS_PREFIX + LoginContext.get().getTenantId() + ":" + userId;
+            String key = RedisCachePrefix.USER_MENU_PREFIX + LoginContext.get().getTenantId() + ":" + userId;
             @SuppressWarnings("unchecked")
             List<SysMenu> cachedMenus = (List<SysMenu>) redisTemplate.opsForValue().get(key);
 
@@ -42,7 +42,7 @@ public class MenuServiceImpl implements MenuService {
             }
             log.debug("menus are : {}",menus);
             // 构建 RouterVO 树结构
-            List<RouterVO> routerList = MenuRouterBuilder.buildMenuTree(menus);
+            List<RouterVO> routerList = MenuRouterBuilder.buildMenus(menus);
             log.debug("routerList is : {}",routerList);
 
             return routerList;

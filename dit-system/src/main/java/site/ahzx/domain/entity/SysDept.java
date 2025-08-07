@@ -10,7 +10,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
-@Table("sys_depts")
+@Table("sys_dept")
 @Data(staticConstructor = "create")
 public class SysDept extends TenantBaseEntity<SysDept> implements Serializable {
     @Serial

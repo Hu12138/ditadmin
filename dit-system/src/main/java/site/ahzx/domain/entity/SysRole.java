@@ -63,9 +63,9 @@ public class SysRole extends TenantBaseEntity<SysRole> implements Serializable {
     private String remark;
 
     @RelationManyToMany(
-            joinTable = "sys_role_menus",
-            selfField = "id", joinSelfColumn = "role_id",
-            targetField = "id", joinTargetColumn = "menu_id"
+            joinTable = "sys_role_menu",
+            selfField = "roleId", joinSelfColumn = "role_id",
+            targetField = "menuId", joinTargetColumn = "menu_id"
     )
     private List<SysMenu> menus;
 

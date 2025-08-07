@@ -1,9 +1,6 @@
 package site.ahzx.domain.entity;
 
-import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.RelationManyToMany;
-import com.mybatisflex.annotation.Table;
+import com.mybatisflex.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -85,16 +82,15 @@ public class SysUser extends TenantBaseEntity<SysUser> implements Serializable {
     private Date loginDate;
 
     @RelationManyToMany(
-            joinTable = "sys_user_roles",
-            selfField = "user_id", joinSelfColumn = "user_id",
-            targetField = "id", joinTargetColumn = "role_id"
+            joinTable = "sys_user_role",
+            selfField = "userId", joinSelfColumn = "user_id",
+            targetField = "roleId", joinTargetColumn = "role_id"
     )
     private List<SysRole> roles;
 
-    @RelationManyToMany(
-            joinTable = "sys_user_depts",
-            selfField = "id", joinSelfColumn = "user_id",
-            targetField = "id", joinTargetColumn = "dept_id"
+    @RelationOneToMany(
+
+            selfField = "userId", targetField = "deptId"
     )
     private List<SysDept> depts;
 

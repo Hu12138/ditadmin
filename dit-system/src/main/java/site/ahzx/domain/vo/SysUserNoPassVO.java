@@ -15,12 +15,12 @@ public class SysUserNoPassVO  implements Serializable {
     /**
      * 用户名
      */
-    private String username;
+    private String userName;
 
     /**
      * 昵称
      */
-    private String nickname;
+    private String nickName;
     /**
      * 头像
      */
@@ -32,7 +32,7 @@ public class SysUserNoPassVO  implements Serializable {
     /**
      * 手机号
      */
-    private String phone;
+    private String phoneNumber;
     /**
      * 性别 0：女 1：男
      */
