@@ -60,11 +60,11 @@ public class SysUser extends TenantBaseEntity<SysUser> implements Serializable {
     /**
      * 性别 0：女 1：男
      */
-    private Integer sex;
+    private String sex;
     /**
      * 状态 （0正常 1停用）
      */
-    private Integer status;
+    private String status;
     /**
      * 删除标志（0代表存在 1代表删除）
      */
@@ -88,10 +88,13 @@ public class SysUser extends TenantBaseEntity<SysUser> implements Serializable {
     )
     private List<SysRole> roles;
 
-    @RelationOneToMany(
+    /**
+     * 暂时定成一个用户只能在一个部门下
+     */
+    @RelationManyToOne(
 
-            selfField = "userId", targetField = "deptId"
+            selfField = "deptId", targetField = "deptId"
     )
-    private List<SysDept> depts;
+    private SysDept dept;
 
 }

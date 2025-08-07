@@ -1,10 +1,13 @@
 package site.ahzx.domain.vo;
 
 import lombok.Data;
+import site.ahzx.domain.entity.SysDept;
+import site.ahzx.domain.entity.SysRole;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class SysUserNoPassVO  implements Serializable {
@@ -17,6 +20,11 @@ public class SysUserNoPassVO  implements Serializable {
      */
     private String userName;
 
+    private Long deptId;
+
+    private String deptName;
+
+    private String userType;
     /**
      * 昵称
      */
@@ -36,11 +44,19 @@ public class SysUserNoPassVO  implements Serializable {
     /**
      * 性别 0：女 1：男
      */
-    private Integer sex;
+    private String sex;
     /**
      * 状态 （0正常 1停用）
      */
-    private Integer status;
+    private String status;
 
-    private LocalDateTime createdAt;
+    private String loginIp;
+
+    private String remark;
+
+
+    private LocalDateTime createTime;
+
+     // 对应 SysUser 中的 private SysDept depts;
+
 }

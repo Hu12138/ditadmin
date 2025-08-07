@@ -181,9 +181,27 @@ public class UserServiceImpl implements UserService {
     public TableDataInfo<SysUserNoPassVO> getUserList(PageBO pageBO) {
 //        Page<SysUserNoPassVO> page = SysUsers.create().page(Page.of(pageBO.getPageNum(), pageBO.getPageSize()));
 
-        Page<SysUserNoPassVO> usersPage = sysUsersMapper.paginateAs(1, 2, QueryWrapper.create().select().from(SYS_USER), SysUserNoPassVO.class);
+//        Page<SysUserNoPassVO> usersPage = sysUsersMapper.paginateWithRelationsAs(pageBO.getPageNum(), pageBO.getPageSize(), QueryWrapper.create().select().from(SYS_USER), SysUserNoPassVO.class);
 
-        return TableDataInfo.build(usersPage);
+        Page<SysUser> usersPage = sysUsersMapper.paginateWithRelations(
+                pageBO.getPageNum(),
+                pageBO.getPageSize(),
+                QueryWrapper.create().select().from(SYS_USER)
+        );
+        List<SysUserNoPassVO> voList = usersPage.getRecords().stream()
+                .map(user -> {
+                    SysUserNoPassVO vo = new SysUserNoPassVO();
+                    BeanUtil.copyProperties(user, vo);
+//                    vo.setRoles(user.getRoles());
+//                    vo.setDept(user.getDept());
+                    vo.setDeptName(user.getDept().getDeptName());
+
+
+                    return vo;
+                }).toList();
+
+        return TableDataInfo.build(voList);
+//        return TableDataInfo.build(usersPage);
 
     }
 
