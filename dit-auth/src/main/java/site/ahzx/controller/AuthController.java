@@ -1,6 +1,7 @@
 package site.ahzx.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -152,5 +153,51 @@ public class AuthController {
         data.put("img", base64Img);
 
         return R.ok(data);
+    }
+
+    @PostMapping("/logout")
+    public R<?> logout( HttpServletRequest request) {
+
+        try {
+            String authHeader = request.getHeader("Authorization");
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return R.fail("无效的Token");
+            }
+
+            String token = authHeader.substring("Bearer ".length());
+
+            // 解析token，获取Claims
+            Claims claims = jwtUtil.parseToken(token);
+            if (claims == null) {
+                return R.fail("Token无效或已过期");
+            }
+
+            Date expirationDate = claims.getExpiration();
+            if (expirationDate == null) {
+                return R.fail("Token格式错误，无法获取过期时间");
+            }
+
+            // 计算剩余有效期
+            long nowMillis = System.currentTimeMillis();
+            long expMillis = expirationDate.getTime();
+            long ttlMillis = expMillis - nowMillis;
+
+            if (ttlMillis <= 0) {
+                return R.fail("Token已过期，无需登出");
+            }
+
+            // Redis key
+            String redisKey = "blacklist:" + token;
+
+            // 写入redis黑名单，设置ttl，单位毫秒
+            redisTemplate.opsForValue().set(redisKey, "", ttlMillis, TimeUnit.MILLISECONDS);
+
+            log.info("用户登出，token加入黑名单，剩余有效期（ms）：{}", ttlMillis);
+
+            return R.ok("登出成功");
+        } catch (Exception e) {
+            log.error("登出异常", e);
+            return R.fail("登出失败，请稍后重试");
+        }
     }
 }

@@ -23,8 +23,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.dromara</groupId>
-            <artifactId>ruoyi-common-core</artifactId>
+            <groupId>site.ahzx</groupId>
+            <artifactId>dit-common-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <!-- JSON工具类 -->

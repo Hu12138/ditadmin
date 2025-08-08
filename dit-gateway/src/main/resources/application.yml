@@ -3,6 +3,12 @@ server:
 spring:
   application:
     name: dit-gateway-service
+  data:
+    redis:
+      host: localhost
+      port: 16379
+      password: 123456  # 如果没有密码可省略
+      timeout: 5000
   cloud:
     nacos:
       discovery:

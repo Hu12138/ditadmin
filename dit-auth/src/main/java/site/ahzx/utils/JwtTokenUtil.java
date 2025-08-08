@@ -2,11 +2,8 @@ package site.ahzx.utils;
 
 import java.security.Key;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SecurityException;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -75,6 +72,28 @@ public class JwtTokenUtil {;
                 .expiration(new Date(System.currentTimeMillis() + expirationSeconds*1000))
                 .signWith(key)
                 .compact();
+    }
+
+
+    public Claims parseToken(String token) {
+        try {
+            JwtParser parser = Jwts.parser()
+                    .verifyWith((SecretKey) key)
+                    .build();
+
+            Jws<Claims> jwsClaims = parser.parseSignedClaims(token);
+            return jwsClaims.getPayload(); // 返回解析出的 Claims
+        } catch (ExpiredJwtException ex) {
+            // Token已过期
+            log.info("Token expired", ex);
+        } catch (SecurityException ex) {
+            // 签名验证失败
+            log.info("Security exception", ex);
+        } catch (Exception e) {
+            // 其他无效Token情况
+            log.info("Other exception", e);
+        }
+        return null;
     }
 
 }

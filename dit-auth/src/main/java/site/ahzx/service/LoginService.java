@@ -8,4 +8,6 @@ public interface LoginService {
      * @return token
      */
     public String login(String username, String password);
+
+    public void logout();
 }
