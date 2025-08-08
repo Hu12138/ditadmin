@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.StrUtil;
+import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
 import java.util.*;
@@ -15,6 +16,8 @@ import java.util.stream.Collectors;
  *
  * @author Lion Li
  */
+
+@Component
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     public static final String SEPARATOR = ",";

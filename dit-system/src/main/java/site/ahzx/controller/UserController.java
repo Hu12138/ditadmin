@@ -1,6 +1,7 @@
 package site.ahzx.controller;
 
 import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.crypto.digest.BCrypt;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -73,6 +74,22 @@ public class UserController {
         return user > 0 ? R.ok("添加成功") : R.fail("添加失败");
     }
 
+    @GetMapping("/{userId}")
+    public R<?> getUser(@PathVariable Long userId){
+
+        return R.ok( userService.getUserNoPassById(userId));
+    }
+
+    @PutMapping("/resetPwd")
+    public R<Void> resetPwd(@RequestBody SysUserBO user) {
+        //TODO：1、判断有没有权限操作这个用户，主要是不能操作超级管理员账户
+//        userService.checkUserAllowed(user.getUserId());
+        // TODO：2、判断有没有用户权限
+//        userService.checkUserDataScope(user.getUserId());
+        // TODO : 加密保存
+//        user.setPassword(BCrypt.hashpw(user.getPassword()));
+        return userService.resetUserPwd(user.getUserId(), user.getPassword()) > 0 ? R.ok() : R.fail();
+    }
 
 
 

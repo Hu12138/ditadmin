@@ -3,6 +3,7 @@ package site.ahzx.domain.entity;
 import com.mybatisflex.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.List;
 @Data(staticConstructor = "create")
 @EqualsAndHashCode(callSuper = true) // 明确包含父类字段
 @Table("sys_user")
+@Accessors(chain = true)
 public class SysUser extends TenantBaseEntity<SysUser> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -88,11 +90,17 @@ public class SysUser extends TenantBaseEntity<SysUser> implements Serializable {
     )
     private List<SysRole> roles;
 
+    @RelationManyToMany(
+            joinTable = "sys_user_post",
+            selfField = "userId", joinSelfColumn = "user_id",
+            targetField = "deptId", joinTargetColumn = "dept_id"
+    )
+    private List<SysPost> posts;
+
     /**
      * 暂时定成一个用户只能在一个部门下
      */
     @RelationManyToOne(
-
             selfField = "deptId", targetField = "deptId"
     )
     private SysDept dept;

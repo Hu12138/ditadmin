@@ -11,7 +11,8 @@ import site.ahzx.context.RequestHeaderContext;
 import site.ahzx.domain.dto.SysUserDTO;
 import site.ahzx.feign.RemoteUserFeign;
 import site.ahzx.service.RemoteUserDetailsService;
-import util.R;
+import site.ahzx.utils.R;
+
 
 import java.util.HashMap;
 import java.util.List;

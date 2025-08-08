@@ -1,4 +1,4 @@
-package util;
+package site.ahzx.utils;
 public interface HttpStatus {
     /**
      * 操作成功

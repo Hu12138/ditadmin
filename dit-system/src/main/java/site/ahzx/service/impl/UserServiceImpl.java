@@ -11,9 +11,8 @@ import site.ahzx.domain.bo.PageBO;
 import site.ahzx.domain.bo.SysUserBO;
 import site.ahzx.domain.entity.SysMenu;
 import site.ahzx.domain.entity.SysRole;
-import site.ahzx.domain.vo.LoginGetUserInfoVO;
-import site.ahzx.domain.vo.SysUserNoPassVO;
-import site.ahzx.domain.vo.SysUserVO;
+import site.ahzx.domain.entity.SysUserPost;
+import site.ahzx.domain.vo.*;
 import site.ahzx.domain.entity.SysUser;
 import site.ahzx.flex.context.LoginContext;
 import site.ahzx.mapper.SysUsersMapper;
@@ -127,14 +126,7 @@ public class UserServiceImpl implements UserService {
         boolean isAdmin = roleCodes.stream().anyMatch("superadmin"::equalsIgnoreCase);
 
         log.debug("isAdmin is {}", isAdmin);
-        if (isAdmin) {
-//            roleCodes.clear();
-//            roleCodes.add("admin");
-            menuSet.clear();
-            menuSet.addAll(SysMenu.create().where(SysMenu::getMenuType).in("M","C").list());
 
-        }
-        log.debug("menuSet is {}", menuSet);
 
 
 // 从去重后的菜单中提取 perms
@@ -142,6 +134,20 @@ public class UserServiceImpl implements UserService {
                 .map(SysMenu::getPerms)
                 .filter(perm -> perm != null && !perm.isEmpty())
                 .collect(Collectors.toSet());
+
+        if (isAdmin) {
+//            roleCodes.clear();
+//            roleCodes.add("admin");
+            menuSet.clear();
+            menuSet.addAll(SysMenu.create().where(SysMenu::getMenuType).in("M","C").list());
+
+            permissions.clear();
+            permissions.add(
+                    "*:*:*"
+            );
+
+        }
+        log.debug("menuSet is {}", menuSet);
 
         LoginGetUserInfoVO loginGetUserInfoVO = new LoginGetUserInfoVO();
 
@@ -179,6 +185,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public TableDataInfo<SysUserNoPassVO> getUserList(PageBO pageBO) {
+        //TODO: 实现SysUserBo，根据前端传来的不同的条件来过滤数据， getUserList(实现SysUserBo xxx ,PageBO pageBO)
 //        Page<SysUserNoPassVO> page = SysUsers.create().page(Page.of(pageBO.getPageNum(), pageBO.getPageSize()));
 
 //        Page<SysUserNoPassVO> usersPage = sysUsersMapper.paginateWithRelationsAs(pageBO.getPageNum(), pageBO.getPageSize(), QueryWrapper.create().select().from(SYS_USER), SysUserNoPassVO.class);
@@ -236,6 +243,54 @@ public class UserServiceImpl implements UserService {
     public Integer addUser(SysUserBO userBO) {
         SysUser user = BeanUtil.copyProperties(userBO, SysUser.class);
         return sysUsersMapper.insert(user);
+    }
+
+    @Override
+    public SysUserInfoVO getUserNoPassById(Long userId) {
+        SysUser sysUser = sysUsersMapper.selectOneWithRelationsById(userId);
+
+        SysUserInfoVO vo = new SysUserInfoVO();
+
+        ArrayList<Long> roleIds = new ArrayList<>();
+        ArrayList<Long> postIds = new ArrayList<>();
+        List<SysRoleVO> roles = new ArrayList<>();
+        List<SysPostVO> posts = new ArrayList<>();
+        SysUserNoPassVO sysUserNoPassVO = new SysUserNoPassVO();
+
+        BeanUtil.copyProperties(sysUser, sysUserNoPassVO);
+
+
+        sysUser.getRoles().forEach(
+                role -> {
+                    roleIds.add(role.getRoleId());
+                }
+        );
+        vo.setRoleIds(roleIds);
+
+        sysUser.getPosts().forEach(
+                post -> {
+                    postIds.add(post.getPostId());
+                }
+        );
+        vo.setPostIds(postIds);
+
+        BeanUtil.copyProperties(sysUser.getRoles(),roles);
+        BeanUtil.copyProperties(sysUser.getPosts(),posts);
+
+        vo.setRoles(roles);
+        vo.setPosts(posts);
+        vo.setUser(sysUserNoPassVO);
+
+
+        return vo;
+    }
+
+    @Override
+    public int resetUserPwd(Long userId, String password) {
+
+
+        return SysUser.create().setUserId(userId).setPassword(password).updateById() ? 1 : 0;
+
     }
 
 

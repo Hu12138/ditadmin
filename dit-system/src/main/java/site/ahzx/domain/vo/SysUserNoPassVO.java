@@ -59,4 +59,23 @@ public class SysUserNoPassVO  implements Serializable {
 
      // 对应 SysUser 中的 private SysDept depts;
 
+    /**
+     * 角色对象
+     */
+    private List<SysRoleVO> roles;
+
+    /**
+     * 角色组
+     */
+    private Long[] roleIds;
+
+    /**
+     * 岗位组
+     */
+    private Long[] postIds;
+
+    /**
+     * 数据权限 当前角色ID
+     */
+    private Long roleId;
 }

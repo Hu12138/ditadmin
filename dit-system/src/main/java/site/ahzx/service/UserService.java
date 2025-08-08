@@ -3,6 +3,7 @@ package site.ahzx.service;
 import site.ahzx.domain.bo.PageBO;
 import site.ahzx.domain.bo.SysUserBO;
 import site.ahzx.domain.vo.LoginGetUserInfoVO;
+import site.ahzx.domain.vo.SysUserInfoVO;
 import site.ahzx.domain.vo.SysUserNoPassVO;
 import site.ahzx.domain.vo.SysUserVO;
 import site.ahzx.domain.entity.SysUser;
@@ -39,4 +40,11 @@ public interface UserService {
     public Boolean checkEmailExist(String email);
 
     Integer addUser(SysUserBO userBO);
+
+    /**
+     * 根据用户id查找用户信息
+     */
+    public SysUserInfoVO getUserNoPassById(Long userId );
+
+    int resetUserPwd(   Long userId, String password);
 }

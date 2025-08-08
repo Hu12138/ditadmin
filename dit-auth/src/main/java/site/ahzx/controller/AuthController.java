@@ -19,7 +19,8 @@ import site.ahzx.domain.vo.LoginVO;
 import site.ahzx.except.RemoteServiceException;
 import site.ahzx.service.LoginService;
 import site.ahzx.utils.JwtTokenUtil;
-import util.R;
+import site.ahzx.utils.R;
+
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
