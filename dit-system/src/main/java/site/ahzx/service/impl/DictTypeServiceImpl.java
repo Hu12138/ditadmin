@@ -6,6 +6,7 @@ import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import org.springframework.stereotype.Service;
 import site.ahzx.domain.bo.PageBO;
+import site.ahzx.domain.bo.SysDictDataBO;
 import site.ahzx.domain.bo.SysDictTypeBO;
 import site.ahzx.domain.entity.SysDictData;
 import site.ahzx.domain.entity.SysDictType;
@@ -64,4 +65,5 @@ public class DictTypeServiceImpl implements DictTypeService {
         return TableDataInfo.build(voPage);
 
     }
+
 }

@@ -9,9 +9,9 @@ import site.ahzx.util.TableDataInfo;
 
 import java.util.List;
 
-public interface DictTypeService {
-    public List<SysDictDataVO> getDictDataByType(String dictType);
+public interface DictDataService {
 
-    TableDataInfo<SysDictTypeVO> selectPageDictTypeList(SysDictTypeBO dictTypeBO, PageBO pageQuery);
+
+    TableDataInfo<SysDictDataVO> selectPageDictDataList(SysDictDataBO dictDataBO, PageBO pageBO);
 
 }

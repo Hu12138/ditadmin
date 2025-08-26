@@ -21,7 +21,7 @@ public class SysDictData extends BaseEntity<SysDictData> implements Serializable
      * 字典编码
      */
     @Id(keyType = KeyType.Auto)
-    private int dictCode;
+    private long dictCode;
 
     /**
      * 字典排序
