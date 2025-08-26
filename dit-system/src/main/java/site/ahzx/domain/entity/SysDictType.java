@@ -23,7 +23,7 @@ public class SysDictType extends TenantBaseEntity<SysDictType> implements Serial
      * 主键
      */
     @Id(keyType = KeyType.Auto)
-    private Long id;
+    private Long dictId;
     /**
      * 字典名称
      */
@@ -32,10 +32,7 @@ public class SysDictType extends TenantBaseEntity<SysDictType> implements Serial
      * 字典类型
      */
     private String dictType;
-    /**
-     * 状态：0正常，1停用
-     */
-    private String status;
+
     /**
      * 备注
      */

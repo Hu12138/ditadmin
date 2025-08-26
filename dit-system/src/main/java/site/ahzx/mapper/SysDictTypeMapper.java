@@ -1,9 +1,7 @@
 package site.ahzx.mapper;
 
 import com.mybatisflex.core.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
-import site.ahzx.domain.entity.SysDictData;
+import site.ahzx.domain.entity.SysDictType;
 
-@Mapper
-public interface SysDictTypeMapper extends BaseMapper<SysDictData> {
+public interface SysDictTypeMapper extends BaseMapper<SysDictType> {
 }
