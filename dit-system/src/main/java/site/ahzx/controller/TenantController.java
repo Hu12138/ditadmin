@@ -23,6 +23,7 @@ public class TenantController {
     @GetMapping("/list")
     public R<?> list() {
         List<SysTenant> tenantList = tenantService.getTenantList();
+        //TODO: 租户关闭情况
         /**
          * 暂时写死，打开租户功能
          */

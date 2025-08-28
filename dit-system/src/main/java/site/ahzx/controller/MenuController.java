@@ -4,7 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import site.ahzx.domain.bo.SysMenuBO;
 import site.ahzx.domain.vo.RouterVO;
+import site.ahzx.domain.vo.SysMenuVO;
+import site.ahzx.flex.context.LoginContext;
 import site.ahzx.service.MenuService;
 import site.ahzx.util.R;
 
@@ -29,5 +32,12 @@ public class MenuController {
         List<RouterVO> routerVOList = menuService.getRouterByUserId(Long.valueOf(userId));
         return R.ok(routerVOList);
 
+    }
+
+    @GetMapping("/list")
+    public R<List<SysMenuVO>> list(SysMenuBO menu) {
+
+        List<SysMenuVO> menus = menuService.selectMenuList(menu, LoginContext.get().getUserId());
+        return R.ok(menus);
     }
 }
